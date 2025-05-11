@@ -1,0 +1,30 @@
+FROM debian:12-slim
+
+# Installation des dépendances système
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Création du répertoire de travail
+WORKDIR /usr/src/app
+
+# Création de la structure des dossiers
+RUN mkdir -p styles scripts
+
+# Copie des fichiers statiques
+COPY front0/index.html ./
+COPY front0/styles/ ./styles/
+COPY front0/scripts/ ./scripts/
+
+# Installation d'un serveur HTTP léger
+RUN npm install -g http-server
+
+# Exposition du port
+EXPOSE 80
+
+# Commande de démarrage
+CMD ["http-server", ".", "-p", "80"]

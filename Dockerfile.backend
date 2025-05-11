@@ -1,0 +1,28 @@
+FROM debian:12-slim
+
+# Installation des dépendances système
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Création du répertoire de travail
+WORKDIR /usr/src/app
+
+# Copie des fichiers package
+COPY package*.json ./
+
+# Installation des dépendances
+RUN npm install
+
+# Copie du reste des fichiers
+COPY . .
+
+# Exposition du port
+EXPOSE 3000
+
+# Commande de démarrage
+CMD ["npm", "start"]

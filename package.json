@@ -1,0 +1,19 @@
+{
+  "name": "pj-srvapi-affichagedynamique",
+  "version": "1.0.0",
+  "description": "Serveur d'execution de script pour l'affichage dynamique; apirest ",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "sai",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "child_process": "^1.0.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.1",
+    "nodemon": "^3.1.10"
+  }
+}
