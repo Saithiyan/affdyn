@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const connection = mongoose.connection;
 
 // Port Setting 3000
-app.set('port', process.env.port || 3000);
+app.set('port', process.env.port || 10000);
 
 // Middleware BodyParser
 app.use(bodyParser.json());
