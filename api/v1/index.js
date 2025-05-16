@@ -25,80 +25,196 @@ router.post('/reset', async (req, res) => {
         await Config.deleteMany({});
         await Button.deleteMany({});
 
-        // Créer les configurations par défaut
+        // Créer la configuration par défaut
         const defaultConfig = await new Config({
             id: 1,
             name: 'Configuration par défaut'
         }).save();
 
-        const secondConfig = await new Config({
-            id: 2,
-            name: 'Configuration supplémentaire'
-        }).save();
-
-        // Créer des boutons pour la configuration par défaut
+        // Créer les boutons pour la configuration par défaut
         const defaultButtons = [
             {
                 id: 1,
                 configid: 1,
-                name: 'Create File Hello.txt',
-                script: '../scripts/create_file.py',
+                name: 'ON/OFF',
+                script: {
+                    scriptOn: 'C:/Users/saike/Desktop/pj-srvapi-affichageDynamique/api/scripts/aff-dyn-script/Bonjour/Bonjour.ps1',
+                    scriptOff: 'C:/Users/saike/Desktop/pj-srvapi-affichageDynamique/api/scripts/aff-dyn-script/Start_Stop/OFF.ps1'
+                },
                 style: {
                     fontcolor: '#FFFFFF',
-                    bgcolor: '#2196F3',
+                    bgcolor: '#4CAF50',  // Vert par défaut (ON)
+                    height: 150,
+                    width: 200
+                },
+                isToggle: true,
+                state: 'off'
+            },
+            {
+                id: 2,
+                configid: 1,
+                name: '1er Service',
+                script: { path: '../scripts/aff-dyn-script/1_1er_Service/Script_1er_Service.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
                     height: 150,
                     width: 200
                 }
             },
             {
-                id: 2,
-                configid: 1,
-                name: 'Delete File Hello.txt',
-                script: '../scripts/delete_file.ps1',
-                style: {
-                    fontcolor: '#FFFFFF',
-                    bgcolor: '#4CAF50',
-                    height: 200,
-                    width: 300
-                }
-            }
-        ];
-
-        // Créer des boutons pour la configuration supplémentaire
-        const additionalButtons = [
-            {
                 id: 3,
-                configid: 2,
-                name: 'Exécuter tâche A',
-                script: './scripts/taskA.sh',
+                configid: 1,
+                name: 'EPS 6/5ème',
+                script: { path: '../scripts/aff-dyn-script/2_EPS_6-5/Script_EPS_6-5.ps1' },
                 style: {
-                    fontcolor: '#FFFFFF',
-                    bgcolor: '#FF5722',
-                    height: 50,
-                    width: 50
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
                 }
             },
             {
                 id: 4,
-                configid: 2,
-                name: 'Exécuter tâche B',
-                script: './scripts/taskB.sh',
+                configid: 1,
+                name: 'EPS 4/3ème',
+                script: { path: '../scripts/aff-dyn-script/3_EPS_4-3/Script_EPS_4-3.ps1' },
                 style: {
-                    fontcolor: '#FFFFFF',
-                    bgcolor: '#9C27B0',
-                    height: 50,
-                    width: 50
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 5,
+                configid: 1,
+                name: '6ème 1ère Heure',
+                script: { path: '../scripts/aff-dyn-script/4_6eme_1erHeure/Script_6eme_1erHeure.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 6,
+                configid: 1,
+                name: '5ème 1ère Heure',
+                script: { path: '../scripts/aff-dyn-script/5_5eme_1erHeure/Script_5eme_1erHeure.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 7,
+                configid: 1,
+                name: '4ème 1ère Heure',
+                script: { path: '../scripts/aff-dyn-script/6_4eme_1erHeure/Script_4eme_1erHeure.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 8,
+                configid: 1,
+                name: '3ème 1ère Heure',
+                script: { path: '../scripts/aff-dyn-script/7_3eme_1erHeure/Script_3eme_1erHeure.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 9,
+                configid: 1,
+                name: '2ème Service',
+                script: { path: '../scripts/aff-dyn-script/11_2eme_Service/Script_2eme_Service.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 10,
+                configid: 1,
+                name: '6/5ème 2ème Heure',
+                script: { path: '../scripts/aff-dyn-script/8_6-5eme_2Heure/Script_6-5eme_2Heure.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 11,
+                configid: 1,
+                name: '4/3ème 2ème Heure',
+                script: { path: '../scripts/aff-dyn-script/9_4-3eme_2Heure/Script_4-3eme_2Heure.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 12,
+                configid: 1,
+                name: 'Carte Oubliée',
+                script: { path: '../scripts/aff-dyn-script/10_Carte_oubliee/Script_Carte_oubliee.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 13,
+                configid: 1,
+                name: 'MESSE',
+                script: { path: '../scripts/aff-dyn-script/13_MESSE/Script_MESSE.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
+                }
+            },
+            {
+                id: 14,
+                configid: 1,
+                name: 'Bol de Riz',
+                script: { path: '../scripts/aff-dyn-script/12_Bol_de_Riz/Script_Bol_de_Riz.ps1' },
+                style: {
+                    fontcolor: '#000000',
+                    bgcolor: '#FFFFFF',
+                    height: 150,
+                    width: 200
                 }
             }
         ];
 
         // Sauvegarder tous les boutons
-        await Button.insertMany([...defaultButtons, ...additionalButtons]);
+        await Button.insertMany(defaultButtons);
 
         res.status(200).json({ 
             message: 'Database initialized with default data',
-            configs: [defaultConfig, secondConfig],
-            buttons: [...defaultButtons, ...additionalButtons]
+            configs: [defaultConfig],
+            buttons: defaultButtons
         });
     } catch (err) {
         console.error('Reset error:', err);
@@ -235,10 +351,116 @@ router.post('/btn', async (req, res) => {
             return res.status(404).json({ message: 'Bouton non trouvé' });
         }
 
-        // Vérifier que le chemin du script existe
+        // Pour tous les boutons : exécuter le script associé s'il existe
+        let scriptPath;
+        if (button.isToggle) {
+            // Déterminer le script à exécuter selon l'état actuel
+            scriptPath = (button.state === 'off' && button.script && button.script.scriptOn) ? button.script.scriptOn : (button.script && button.script.scriptOff);
+        } else {
+            scriptPath = button.script && button.script.path;
+        }
+        if (!scriptPath) {
+            return res.status(400).json({ message: 'Aucun script défini pour ce bouton' });
+        }
+
+        // Changer la couleur du bouton en jaune pendant l'exécution
+        button.style.bgcolor = '#FFEB3B';
+        await button.save();
+
+        try {
+            const { spawn } = require('child_process');
+            const path = require('path');
+            // Si le chemin est absolu, le garder, sinon le résoudre
+            const absScriptPath = path.isAbsolute(scriptPath) ? scriptPath : path.resolve(__dirname, scriptPath);
+            const ext = path.extname(absScriptPath).toLowerCase();
+            let scriptProcess;
+
+            if (ext === '.py') {
+                scriptProcess = spawn('python', [absScriptPath]);
+            } else if (ext === '.sh') {
+                scriptProcess = spawn('sh', [absScriptPath]);
+            } else if (ext === '.ps1') {
+                scriptProcess = spawn('powershell', [
+                    '-ExecutionPolicy', 'Bypass',
+                    '-File', absScriptPath
+                ]);
+            } else if (ext === '.bat' || ext === '.cmd') {
+                scriptProcess = spawn('cmd', ['/c', absScriptPath]);
+            } else {
+                throw new Error('Type de script non supporté');
+            }
+
+            let output = '';
+            let errorOutput = '';
+
+            scriptProcess.stdout.on('data', (data) => {
+                const text = data.toString();
+                console.log('Script output:', text);
+                output += text;
+            });
+
+            scriptProcess.stderr.on('data', (data) => {
+                const text = data.toString();
+                console.error('Script error:', text);
+                errorOutput += text;
+            });
+
+            await new Promise((resolve, reject) => {
+                scriptProcess.on('close', (code) => {
+                    console.log('Script exit code:', code);
+                    if (code === 0) {
+                        resolve();
+                    } else {
+                        reject(new Error(`Script terminé avec le code ${code}\nSortie: ${output}\nErreur: ${errorOutput}`));
+                    }
+                });
+                scriptProcess.on('error', (err) => {
+                    console.error('Script process error:', err);
+                    reject(err);
+                });
+            });
+
+            // Remettre la couleur d'origine après exécution
+            button.style.bgcolor = button.name === 'ON' ? '#4CAF50' : button.name === 'OFF' ? '#FF0000' : '#FFFFFF';
+            await button.save();
+
+            return res.status(200).json({
+                message: `Script ${button.script} exécuté avec succès`,
+                output: output,
+                error: errorOutput,
+                date: new Date()
+            });
+        } catch (scriptError) {
+            console.error('Erreur lors de l\'exécution du script:', scriptError);
+            // Remettre la couleur d'origine même en cas d'erreur
+            button.style.bgcolor = button.name === 'ON' ? '#4CAF50' : button.name === 'OFF' ? '#FF0000' : '#FFFFFF';
+            await button.save();
+            return res.status(500).json({ 
+                message: 'Erreur lors de l\'exécution du script',
+                error: scriptError.message 
+            });
+        }
+
+        // Pour les autres boutons, vérifier si ON/OFF est activé
+        const toggleButton = await Button.findOne({
+            configid: button.configid,
+            isToggle: true
+        });
+
+        if (!toggleButton || toggleButton.state !== 'on') {
+            return res.status(400).json({
+                message: 'Le système doit être activé (ON) pour exécuter des commandes'
+            });
+        }
+
+        // Si le script n'est pas défini
         if (!button.script) {
             return res.status(400).json({ message: 'Aucun script défini pour ce bouton' });
         }
+
+        // Changer la couleur du bouton en jaune
+        button.style.bgcolor = '#FFEB3B';
+        await button.save();
 
         try {
             const { spawn } = require('child_process');

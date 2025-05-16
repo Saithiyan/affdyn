@@ -2,9 +2,22 @@ const ui = {
     // Éléments DOM
     configsList: document.getElementById('configs-list'),
     buttonsList: document.getElementById('buttons-list'),
+    notificationContainer: document.getElementById('notification-container'),
+
+    showNotification(message, type = 'success', duration = 3000) {
+        const notif = document.createElement('div');
+        notif.className = `notification ${type}`;
+        notif.textContent = message;
+        this.notificationContainer.appendChild(notif);
+        setTimeout(() => {
+            notif.style.opacity = '0';
+            setTimeout(() => notif.remove(), 400);
+        }, duration);
+    },
 
     // État de l'application
     activeConfigId: null,
+    toggleState: 'off',
 
     // Initialisation
     async init() {
@@ -42,8 +55,18 @@ const ui = {
         const buttonElement = document.createElement('button');
         buttonElement.className = 'dynamic-button';
         buttonElement.textContent = button.name;
-        buttonElement.style.backgroundColor = button.style.bgcolor;
-        buttonElement.style.color = button.style.fontcolor;
+        buttonElement.dataset.id = button.id;
+        buttonElement.dataset.isToggle = button.isToggle || false;
+
+        // Définir la couleur initiale du bouton
+        if (button.isToggle) {
+            buttonElement.style.backgroundColor = this.toggleState === 'on' ? '#4CAF50' : '#FF0000';
+            buttonElement.style.color = '#FFFFFF';
+            buttonElement.textContent = this.toggleState === 'on' ? 'ON' : 'OFF';
+        } else {
+            buttonElement.style.backgroundColor = '#FFFFFF';
+            buttonElement.style.color = '#000000';
+        }
 
         // Appliquer les dimensions du bouton avec les minimums requis
         if (button.style && button.style.width) {
@@ -57,11 +80,37 @@ const ui = {
 
         buttonElement.onclick = async () => {
             try {
+                if (button.isToggle) {
+                    // Gérer le bouton toggle ON/OFF
+                    this.toggleState = this.toggleState === 'on' ? 'off' : 'on';
+                    buttonElement.style.backgroundColor = this.toggleState === 'on' ? '#4CAF50' : '#FF0000';
+                    buttonElement.textContent = this.toggleState === 'on' ? 'ON' : 'OFF';
+                    
+                    if (this.toggleState === 'off') {
+                        // Réinitialiser tous les autres boutons en blanc
+                        const allButtons = this.buttonsList.querySelectorAll('.dynamic-button:not([data-is-toggle="true"])');
+                        allButtons.forEach(btn => btn.style.backgroundColor = '#FFFFFF');
+                    }
+                } else {
+                    // Pour les autres boutons, vérifier si le toggle est ON
+                    if (this.toggleState === 'off') {
+                        this.showNotification('Le bouton ON/OFF doit être activé pour exécuter ce bouton', 'error');
+                        return;
+                    }
+                    // Un seul bouton actif (jaune) à la fois
+                    const allButtons = this.buttonsList.querySelectorAll('.dynamic-button:not([data-is-toggle="true"])');
+                    allButtons.forEach(btn => btn.style.backgroundColor = '#FFFFFF');
+                    buttonElement.style.backgroundColor = '#FFEB3B';
+                }
+
                 const response = await api.executeButton(button.id, button.configid);
+                if (response && response.message) {
+                    this.showNotification(response.message, 'success');
+                }
                 console.log('Réponse du script:', response);
             } catch (error) {
                 console.error('Erreur lors de l\'exécution du script:', error);
-                alert('Erreur lors de l\'exécution du script');
+                this.showNotification('Erreur lors de l\'exécution du script', 'error');
             }
         };
 

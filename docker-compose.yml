@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     ports:
-      - "3000:3000"
+      - "10000:10000"
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/affichagedynamique
     depends_on:
@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
     ports:
-      - "3001:3001"
+      - "80:80"
     depends_on:
       - backend
     networks:
