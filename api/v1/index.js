@@ -422,6 +422,11 @@ router.post('/btn', async (req, res) => {
 
             // Remettre la couleur d'origine après exécution
             button.style.bgcolor = button.name === 'ON' ? '#4CAF50' : button.name === 'OFF' ? '#FF0000' : '#FFFFFF';
+
+            // Correction : inverser l'état du bouton toggle après exécution
+            if (button.isToggle) {
+                button.state = (button.state === 'off') ? 'on' : 'off';
+            }
             await button.save();
 
             return res.status(200).json({
